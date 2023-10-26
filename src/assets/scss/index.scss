@@ -1,0 +1,31 @@
+@import-normalize;
+
+:root {
+  --color-primary: #55423D;
+  --color-secondary: #140D0B;
+  --color-background: #FFF3EC;
+  --font-display: 'Lora', serif;
+  --font-text: 'Montserrat', sans-serif;
+  --padding-default: 2.4rem;
+  --padding-large: 4.8rem;
+  --padding-small: 1.6rem;
+  --padding-xsmall: 0.8rem;
+  --font-size-default: 1.6rem;
+  --font-size-large: 2.4rem;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  padding: 0 var(--padding-default);
+  margin: 0;
+  background-color: var(--color-background);
+  color: var(--color-secondary);
+  font-family: var(--font-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  display: flex;
+  flex-direction: column;
+}

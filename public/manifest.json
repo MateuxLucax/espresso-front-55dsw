@@ -1,6 +1,7 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "espresso",
+  "name": "espress",
+  "description": "descubra o mundo do café compartilhando e explorando receitas com apaixonados por café como você!",
   "icons": [
     {
       "src": "favicon.ico",
@@ -20,6 +21,6 @@
   ],
   "start_url": ".",
   "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
+  "theme_color": "#55423D",
+  "background_color": "#FFF3EC"
 }

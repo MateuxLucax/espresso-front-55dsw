@@ -1,0 +1,59 @@
+main {
+  max-width: 76.8rem;
+  margin: 0 auto;
+
+  section {
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+
+    img {
+      margin-top: 6.4rem;
+      height: 3.2rem;
+    }
+
+    .title {
+      display: flex;
+      flex-direction: column;
+      gap: 3.2rem;
+      margin: auto 0;
+
+      h1 {
+        font-family: var(--font-display);
+        color: var(--color-primary);
+        font-weight: normal;
+        font-size: 6.4rem;
+        margin: 0;
+
+        span {
+          font-weight: bold;
+        }
+      }
+
+      h2 {
+        font-size: 2.4rem;
+        font-weight: normal;
+        margin: 0;
+      }
+    }
+
+    .scrollDown {
+      height: 6.4rem;
+      width: 3.2rem;
+      border: .4rem solid var(--color-primary);
+      border-radius: 3.2rem;
+      margin: 0 auto 2.4rem auto;
+      display: flex;
+      flex-direction: column;
+
+      span {
+        margin: auto auto .8rem auto;
+        height: 1.6rem;
+        width: 1.6rem;
+        background-color: var(--color-primary);
+        border-radius: 50%;
+      }
+    }
+  }
+}
