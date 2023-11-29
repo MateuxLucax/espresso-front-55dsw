@@ -1,17 +1,16 @@
 import { User } from "../models/User";
 import { Request } from "./request";
-import { API_URL } from "./utils";
 
 export class LoginService {
-  public static async login(email: string, password: string): Promise<true> {
-    const response = await Request.post(`${API_URL}/auth/login`, {
+  public static async login(email: string, password: string): Promise<User> {
+    const response = await Request.post("auth/login", {
       email,
       password,
     });
 
     const { token } = response;
 
-    const me = await Request.get(`${API_URL}/artisan/me`, {
+    const me = await Request.get("artisan/me", {
       Authorization: `Bearer ${token}`,
     });
 
@@ -22,6 +21,8 @@ export class LoginService {
       token,
     };
 
-    return true;
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return user;
   }
 }

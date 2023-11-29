@@ -23,8 +23,8 @@ export default function SignInPage() {
       setEmailError("");
       setPasswordError("");
       setGeneralError("");
-      const didLogin = await LoginService.login(email, password);
-      if (didLogin) {
+      const user = await LoginService.login(email, password);
+      if (user) {
         navigate("/");
       }
     } catch (error: any) {
