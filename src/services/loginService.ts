@@ -25,4 +25,37 @@ export class LoginService {
 
     return user;
   }
+
+  public static async logout(): Promise<void> {
+    localStorage.removeItem("user");
+  }
+
+  public static async signup(
+    name: string,
+    email: string,
+    password: string
+  ): Promise<User> {
+    const response = await Request.post("auth/register", {
+      name,
+      email,
+      password,
+    });
+
+    const { token } = response;
+
+    const me = await Request.get("artisan/me", {
+      Authorization: `Bearer ${token}`,
+    });
+
+    const user: User = {
+      id: me.id,
+      email: me.email,
+      name: me.name,
+      token,
+    };
+
+    localStorage.setItem("user", JSON.stringify(user));
+
+    return user;
+  }
 }

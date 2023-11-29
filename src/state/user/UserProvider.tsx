@@ -33,7 +33,11 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     checkUser();
   }, []);
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ user, setUser }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
 
 export default UserProvider;

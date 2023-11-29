@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 import ErrorToast from "../../components/ErrorToast";
 import UserContext from "../../state/user/UserContext";
 
-export default function SignInPage() {
+export default function SignUpPage() {
   const navigate = useNavigate();
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
@@ -16,6 +17,20 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
   const userContext = useContext(UserContext);
+
+  function checkPassword(password: string) {
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+
+    if (regex.test(password)) {
+      return true;
+    }
+
+    setPasswordError(
+      "a senha deve conter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial"
+    );
+    return false;
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -25,18 +40,23 @@ export default function SignInPage() {
       setEmailError("");
       setPasswordError("");
       setGeneralError("");
-      const user = await LoginService.login(email, password);
+
+      if (!checkPassword(password)) {
+        return;
+      }
+
+      const user = await LoginService.signup(name, email, password);
       if (user) {
         userContext.setUser(user);
         navigate("/me");
       }
     } catch (error: any) {
-      if (error.status === 404) {
-        setEmailError("email não encontrado");
-      } else if (error.status === 401) {
-        setPasswordError("senha incorreta");
+      if (error.status === 409) {
+        setEmailError("email já cadastrado");
       } else {
-        setGeneralError("erro ao fazer login");
+        setGeneralError(
+          "não foi possível cadastrar. tente novamente mais tarde ou entre em contato com o suporte"
+        );
       }
     } finally {
       setLoading(false);
@@ -52,12 +72,23 @@ export default function SignInPage() {
           alt="logo do espresso (uma xícara de café ao lado do texto 'espresso')"
         />
         <h1 className="font-display text-primary text-4xl font-bold my-8">
-          entrar
+          cadastrar
         </h1>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center gap-4"
         >
+          <Input
+            id={"name"}
+            label={"nome"}
+            type={"text"}
+            value={name}
+            onChange={(e) => {
+              setName(e.target.value);
+            }}
+            required={true}
+            placeholder={"digite seu nome"}
+          />
           <Input
             id={"email"}
             label={"email"}
@@ -84,7 +115,7 @@ export default function SignInPage() {
           />
           <Button
             className="mt-4"
-            text={"entrar"}
+            text={"cadastrar"}
             type={"submit"}
             icon={"login"}
             loading={loading}

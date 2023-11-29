@@ -1,6 +1,14 @@
 import React from "react";
 import { User } from "../../models/User";
 
-const UserContext = React.createContext<User | undefined>(undefined);
+export type UserContextType = {
+  user: User | undefined;
+  setUser: React.Dispatch<React.SetStateAction<User | undefined>>;
+};
+
+const UserContext = React.createContext<UserContextType>({
+  user: undefined,
+  setUser: () => {},
+});
 
 export default UserContext;
