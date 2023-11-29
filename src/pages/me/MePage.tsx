@@ -1,10 +1,11 @@
 import { useContext } from "react";
 import UserContext from "../../state/user/UserContext";
+import Header from "../../components/Header";
 
 export default function MePage() {
-  const userContext = useContext(UserContext);
+  const { user } = useContext(UserContext);
 
-  if (!userContext)
+  if (!user)
     return (
       <main className="max-w-lg my-auto self-center flex flex-col">
         <h1 className="font-display text-primary text-4xl font-bold my-8">
@@ -14,10 +15,13 @@ export default function MePage() {
     );
 
   return (
-    <main className="max-w-lg my-auto self-center flex flex-col">
-      <h1 className="font-display text-primary text-4xl font-bold my-8">
-        {userContext.user?.name}
-      </h1>
-    </main>
+    <>
+      <Header />
+      <main className="max-w-lg my-auto self-center flex flex-col">
+        <h1 className="font-display text-primary text-4xl font-bold my-8">
+          {user?.name}
+        </h1>
+      </main>
+    </>
   );
 }

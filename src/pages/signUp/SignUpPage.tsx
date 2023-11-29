@@ -16,7 +16,7 @@ export default function SignUpPage() {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
-  const userContext = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   function checkPassword(password: string) {
     const regex =
@@ -47,7 +47,7 @@ export default function SignUpPage() {
 
       const user = await LoginService.signup(name, email, password);
       if (user) {
-        userContext.setUser(user);
+        setUser(user);
         navigate("/me");
       }
     } catch (error: any) {

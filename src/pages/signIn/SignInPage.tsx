@@ -15,7 +15,7 @@ export default function SignInPage() {
   const [passwordError, setPasswordError] = useState("");
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
-  const userContext = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -27,7 +27,7 @@ export default function SignInPage() {
       setGeneralError("");
       const user = await LoginService.login(email, password);
       if (user) {
-        userContext.setUser(user);
+        setUser(user);
         navigate("/me");
       }
     } catch (error: any) {
