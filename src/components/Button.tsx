@@ -2,8 +2,10 @@ interface ButtonProps {
   text: string;
   type?: "submit" | "reset" | "button" | undefined;
   icon: string;
-  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -12,15 +14,25 @@ const Button: React.FC<ButtonProps> = ({
   icon,
   onClick,
   className,
+  loading,
+  disabled,
 }) => {
   return (
     <button
       type={type}
       onClick={onClick}
-      className={`flex bg-primary text-background font-bold gap-2 px-8 py-2 justify-center ${className}`}
+      disabled={disabled || loading}
+      className={`flex bg-primary text-background font-bold gap-2 px-8 py-2 justify-center disabled:opacity-60 hover:opacity-80 active:opacity-70 ${className}`}
     >
       {text}
-      {icon ? <i className={`material-symbols-outlined`}>{icon}</i> : null}
+      {icon && !loading ? (
+        <i className="material-symbols-outlined">{icon}</i>
+      ) : null}
+      {loading ? (
+        <i className="material-symbols-outlined animate-spin">
+          progress_activity
+        </i>
+      ) : null}
     </button>
   );
 };

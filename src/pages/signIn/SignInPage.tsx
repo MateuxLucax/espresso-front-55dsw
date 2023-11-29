@@ -2,14 +2,43 @@ import { useState } from "react";
 import logo from "../../assets/svg/logo.svg";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import { LoginService } from "../../services/loginService";
+import { useNavigate } from "react-router-dom";
+import ErrorToast from "../../components/ErrorToast";
 
 export default function SignInPage() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [generalError, setGeneralError] = useState("");
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    console.log(event);
+
+    try {
+      setLoading(true);
+      setEmailError("");
+      setPasswordError("");
+      setGeneralError("");
+      const didLogin = await LoginService.login(email, password);
+      if (didLogin) {
+        navigate("/");
+      }
+    } catch (error: any) {
+      console.log(error);
+      if (error.status === 404) {
+        setEmailError("email não encontrado");
+      } else if (error.status === 401) {
+        setPasswordError("senha incorreta");
+      } else {
+        setGeneralError("erro ao fazer login");
+      }
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -30,13 +59,14 @@ export default function SignInPage() {
           <Input
             id={"email"}
             label={"email"}
-            type={"text"}
+            type={"email"}
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
             required={true}
             placeholder={"digite seu email"}
+            error={emailError}
           />
           <Input
             id={"password"}
@@ -48,14 +78,16 @@ export default function SignInPage() {
             }}
             required={true}
             placeholder={"digite sua senha"}
+            error={passwordError}
           />
           <Button
             text={"entrar"}
             type={"submit"}
             icon={"login"}
-            onClick={() => {}}
+            loading={loading}
           />
         </form>
+        {generalError && <ErrorToast message={generalError} />}
       </main>
     </>
   );

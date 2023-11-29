@@ -10,6 +10,8 @@ interface InputProps {
   required?: boolean;
   readOnly?: boolean;
   className?: string;
+  error?: string;
+  hint?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -22,6 +24,8 @@ const Input: React.FC<InputProps> = ({
   required,
   readOnly,
   className,
+  error,
+  hint,
 }) => {
   return (
     <div className={`flex flex-col gap-2 ${className}`}>
@@ -31,13 +35,17 @@ const Input: React.FC<InputProps> = ({
       <input
         type={type}
         value={value}
-        className="border-black border-2 bg-transparent text-black p-2 placeholder-black"
+        className={`border-black border-2 bg-transparent text-black p-2 placeholder-black focus:outline-none
+          ${error && "border-red-500 text-red-500 placeholder:text-red-500"}
+        `}
         id={id}
         required={required}
         readOnly={readOnly}
         onChange={onChange}
         placeholder={placeholder}
       />
+      {error ? <span className="text-red-500">{error}</span> : null}
+      {hint && !error ? <span className="text-gray-500">{hint}</span> : null}
     </div>
   );
 };
