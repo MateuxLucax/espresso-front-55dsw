@@ -33,6 +33,7 @@ export default function SignUpPage() {
   }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+    if (loading) return;
     event.preventDefault();
 
     try {
@@ -83,9 +84,7 @@ export default function SignUpPage() {
             label={"nome"}
             type={"text"}
             value={name}
-            onChange={(e) => {
-              setName(e.target.value);
-            }}
+            onChange={setName}
             required={true}
             placeholder={"digite seu nome"}
           />
@@ -94,9 +93,7 @@ export default function SignUpPage() {
             label={"email"}
             type={"email"}
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={setEmail}
             required={true}
             placeholder={"digite seu email"}
             error={emailError}
@@ -106,9 +103,7 @@ export default function SignUpPage() {
             label={"senha"}
             type={"password"}
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={setPassword}
             required={true}
             placeholder={"digite sua senha"}
             error={passwordError}

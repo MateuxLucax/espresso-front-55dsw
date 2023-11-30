@@ -19,11 +19,16 @@ export class Request {
     }
   }
 
-  public static async post(url: string, body: any): Promise<any> {
+  public static async post(
+    url: string,
+    body: any,
+    headers?: HeadersInit
+  ): Promise<any> {
     const response = await fetch(`${API_URL}/${url}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        ...headers,
       },
       body: JSON.stringify(body),
     });

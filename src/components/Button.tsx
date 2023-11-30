@@ -8,7 +8,7 @@ interface ButtonProps {
   disabled?: boolean;
 }
 
-const Button: React.FC<ButtonProps> = ({
+export default function Button({
   text,
   type,
   icon,
@@ -16,7 +16,7 @@ const Button: React.FC<ButtonProps> = ({
   className,
   loading,
   disabled,
-}) => {
+}: ButtonProps) {
   return (
     <button
       type={type}
@@ -35,6 +35,4 @@ const Button: React.FC<ButtonProps> = ({
       ) : null}
     </button>
   );
-};
-
-export default Button;
+}

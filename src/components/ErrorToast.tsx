@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 interface ErrorToastProps {
   title?: string;
@@ -6,7 +6,11 @@ interface ErrorToastProps {
   timeout?: number;
 }
 
-const ErrorToast: React.FC<ErrorToastProps> = ({ message, title, timeout }) => {
+export default function ErrorToast({
+  message,
+  title,
+  timeout,
+}: ErrorToastProps) {
   const [isVisible, setIsVisible] = useState(true);
 
   useEffect(() => {
@@ -31,6 +35,4 @@ const ErrorToast: React.FC<ErrorToastProps> = ({ message, title, timeout }) => {
       </div>
     </div>
   );
-};
-
-export default ErrorToast;
+}

@@ -26,7 +26,7 @@ const routes = [
   },
 ];
 
-function Header() {
+export default function Header() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { setUser, user } = useContext(UserContext);
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ function Header() {
 
   return (
     <>
-      <header className="fixed flex justify-between items-center h-16 w-full px-4 border-solid border-primary border-b-2">
+      <header className="z-20 fixed flex justify-between items-center h-16 w-full px-6 border-solid bg-background border-primary border-b-2">
         <button
           onClick={toggleSidebar}
           title="abrir menu"
@@ -97,17 +97,18 @@ function Header() {
           <div className="w-full h-0.5 bg-primary"></div>
           <ul className="flex flex-col gap-2">
             {routes.map((route) => (
-              <li className="flex gap-4 items-center">
+              <li key={route.path} className="flex gap-4 items-center">
                 <NavLink
                   className={({ isActive }) => `
                 ${
                   isActive
                     ? "font-bold border-b-primary border-b-2"
-                    : "font-normal hover:opacity-80 active:opacity-70"
+                    : "font-normal hover:opacity-80 active:opacity-70 hover:border-b-2 hover:border-primary"
                 }
-                flex font-display font-bold text-xl line-clamp-1 h-12 items-center justify-start w-full gap-2
+                border-b-2 border-transparent flex font-display font-bold text-xl line-clamp-1 h-12 items-center justify-start w-full gap-2
               `}
                   to={route.path}
+                  end
                 >
                   <span className="material-symbols-outlined text-2xl">
                     {route.icon}
@@ -122,5 +123,3 @@ function Header() {
     </>
   );
 }
-
-export default Header;

@@ -19,6 +19,7 @@ export default function SignInPage() {
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (loading) return;
 
     try {
       setLoading(true);
@@ -63,9 +64,7 @@ export default function SignInPage() {
             label={"email"}
             type={"email"}
             value={email}
-            onChange={(e) => {
-              setEmail(e.target.value);
-            }}
+            onChange={setEmail}
             required={true}
             placeholder={"digite seu email"}
             error={emailError}
@@ -75,9 +74,7 @@ export default function SignInPage() {
             label={"senha"}
             type={"password"}
             value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-            }}
+            onChange={setPassword}
             required={true}
             placeholder={"digite sua senha"}
             error={passwordError}
