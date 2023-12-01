@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import logo from "../assets/svg/logo.svg";
 import UserContext from "../state/user/UserContext";
 import { NavLink, useNavigate } from "react-router-dom";
@@ -36,6 +36,20 @@ export default function Header() {
   const { setUser, user } = useContext(UserContext);
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const escapeFunction = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isSidebarOpen) {
+        setIsSidebarOpen(false);
+      }
+    };
+
+    document.addEventListener("keydown", escapeFunction);
+
+    return () => {
+      document.removeEventListener("keydown", escapeFunction);
+    };
+  }, [isSidebarOpen]);
+
   function logout() {
     const confirm = window.confirm("atenção! deseja mesmo sair?");
     if (!confirm) return;
@@ -56,7 +70,7 @@ export default function Header() {
         <button
           onClick={toggleSidebar}
           title="abrir menu"
-          className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center"
+          className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
         >
           <i className="material-symbols-outlined">menu</i>
         </button>
@@ -68,7 +82,7 @@ export default function Header() {
         <button
           onClick={logout}
           title="sair"
-          className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center"
+          className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
         >
           <i className="material-symbols-outlined">logout</i>
         </button>
@@ -86,7 +100,7 @@ export default function Header() {
           className="bg-background w-full h-full md:w-96 md:border-solid md:border-primary md:border-r-2 flex flex-col p-4 gap-4"
         >
           <div className="flex gap-2 items-center justify-between">
-            <span className="hidden sm:flex material-symbols-outlined text-3xl">
+            <span className="md:hidden material-symbols-outlined text-3xl">
               face
             </span>
             <h3 className="font-display font-bold text-2xl line-clamp-1">
@@ -95,7 +109,7 @@ export default function Header() {
             <button
               onClick={toggleSidebar}
               title="fechar menu"
-              className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center"
+              className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
             >
               <i className="material-symbols-outlined">close</i>
             </button>
@@ -111,7 +125,7 @@ export default function Header() {
                     ? "font-bold border-b-primary border-b-2"
                     : "font-normal hover:opacity-80 active:opacity-70 hover:border-b-2 hover:border-primary"
                 }
-                border-b-2 border-transparent flex font-display font-bold text-xl line-clamp-1 h-12 items-center justify-start w-full gap-2
+                border-b-2 border-transparent flex font-display font-bold text-xl line-clamp-1 h-12 items-center justify-start w-full gap-2 transition-all
               `}
                   to={route.path}
                   end

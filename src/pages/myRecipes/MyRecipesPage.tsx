@@ -6,7 +6,7 @@ import { Recipe } from "../../models/Recipe";
 import { RecipeService } from "../../services/recipeService";
 import { Link } from "react-router-dom";
 
-export function RecipesPage() {
+export function MyRecipesPage() {
   const [recipes, setRecipes] = useState<Recipe[]>();
   const [error, setError] = useState<string>("");
 
@@ -14,7 +14,7 @@ export function RecipesPage() {
     async function getRecipe() {
       try {
         setError("");
-        setRecipes(await RecipeService.getAll());
+        setRecipes(await RecipeService.getMine());
       } catch (error) {
         setError("erro ao carregar receita");
       }
@@ -28,7 +28,7 @@ export function RecipesPage() {
       <Header />
       <main className="w-full max-w-6xl flex flex-col mt-16">
         <div className="flex">
-          <Title>receitas</Title>
+          <Title>minhas receitas</Title>
         </div>
         <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pb-8 ">
           {recipes?.map((recipe) => (

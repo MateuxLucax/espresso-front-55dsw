@@ -22,7 +22,7 @@ export default function Button({
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className={`flex bg-primary text-background font-bold gap-2 px-8 py-2 justify-center disabled:opacity-60 hover:opacity-80 active:opacity-70 ${className}`}
+      className={`flex bg-primary text-background font-bold gap-2 px-8 py-2 justify-center disabled:opacity-60 hover:opacity-80 active:opacity-70 transition-all ${className}`}
     >
       {text}
       {icon && !loading ? (

@@ -158,7 +158,7 @@ export default function CreateRecipePage() {
                     />
                     <button
                       type="button"
-                      className="h-12 w-12 flex justify-center items-center border-2 border-l-0 border-primary hover:opacity-80 active:opacity-70"
+                      className="h-12 w-12 flex justify-center items-center border-2 border-l-0 text-primary border-primary hover:bg-primary hover:text-background active:opacity-70 transition-all"
                       onClick={() => {
                         const newSteps = [...steps];
                         newSteps.splice(index, 1);
@@ -188,7 +188,7 @@ export default function CreateRecipePage() {
                     setSteps([...steps, newStep]);
                     setNewStep("");
                   }}
-                  className="h-12 w-12 flex justify-center items-center border-2 border-l-0 border-primary hover:opacity-80 active:opacity-70"
+                  className="h-12 w-12 flex justify-center items-center border-2 border-l-0 text-primary border-primary hover:bg-primary hover:text-background active:opacity-70 transition-all"
                 >
                   <i className="material-symbols-outlined">add</i>
                 </button>

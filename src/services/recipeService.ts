@@ -21,6 +21,10 @@ export class RecipeService {
 
     return await Request.get({ url: "public/recipe/all", useToken: false });
   }
+
+  static async getMine(): Promise<Recipe[]> {
+    return await Request.get({ url: "recipe/mine" });
+  }
 }
 
 export type CreateRecipeDTO = {
