@@ -15,6 +15,11 @@ const routes = [
     icon: "menu_book",
   },
   {
+    name: "minhas receitas",
+    path: "/receitas/minhas",
+    icon: "local_library",
+  },
+  {
     name: "favoritos",
     path: "/favoritos",
     icon: "bookmarks",
@@ -68,7 +73,7 @@ export default function Header() {
         </button>
       </header>
       <aside
-        className={`fixed flex flex-col top-0 left-0 h-screen w-full z-10 transform transition-transform duration-200 ease-out ${
+        className={`fixed flex flex-col top-0 left-0 h-screen w-full z-10 transform transition-transform duration-200 ease-out z-30 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         onClick={toggleSidebar}

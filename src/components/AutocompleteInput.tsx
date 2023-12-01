@@ -41,6 +41,7 @@ export default function AutocompleteInput({
       <div className="relative">
         <input
           id={id}
+          autoComplete="off"
           type="text"
           className="w-full border-black border-2 bg-transparent text-black p-2 placeholder-black focus:outline-none"
           placeholder={placeholder}

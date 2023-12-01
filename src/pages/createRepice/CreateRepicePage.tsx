@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AutocompleteInput from "../../components/AutocompleteInput";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
@@ -8,8 +8,11 @@ import Checkbox from "../../components/Checkbox";
 import UserContext from "../../state/user/UserContext";
 import ErrorToast from "../../components/ErrorToast";
 import { RecipeService } from "../../services/recipeService";
+import { useNavigate } from "react-router-dom";
+import { MethodService } from "../../services/methodService";
 
 export default function CreateRecipePage() {
+  const navigate = useNavigate();
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [method, setMethod] = useState("");
@@ -20,6 +23,22 @@ export default function CreateRecipePage() {
   const [pubic, setPublic] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [methods, setMethods] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getMethods() {
+      try {
+        const methods = await MethodService.all(user?.token || "");
+        if (methods) {
+          setMethods(methods);
+        }
+      } catch (error: any) {
+        console.error(error);
+        setError("não foi possível carregar os métodos");
+      }
+    }
+    getMethods();
+  }, [user]);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -50,11 +69,16 @@ export default function CreateRecipePage() {
         setSteps([]);
         setNewStep("");
         setPublic(false);
+        navigate(`/receitas/visualizar/${recipe.id}`);
       } else {
         throw new Error();
       }
     } catch (error: any) {
-      setError("não foi possível criar a receita");
+      if (error.status === 404) {
+        setError("método não encontrado");
+      } else {
+        setError("não foi possível criar a receita");
+      }
     } finally {
       setLoading(false);
     }
@@ -91,7 +115,7 @@ export default function CreateRecipePage() {
               value={method}
               onChange={setMethod}
               required={true}
-              options={["b", "bb", "bbb", "bbbb", "bbbbb", "bbbbbb"]}
+              options={methods}
             />
             <Input
               className="w-1/4"
