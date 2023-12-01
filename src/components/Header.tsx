@@ -41,6 +41,7 @@ export default function Header() {
     if (!confirm) return;
 
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     setUser(undefined);
     navigate("/");
   }
@@ -73,7 +74,7 @@ export default function Header() {
         </button>
       </header>
       <aside
-        className={`fixed flex flex-col top-0 left-0 h-screen w-full z-10 transform transition-transform duration-200 ease-out z-30 ${
+        className={`fixed flex flex-col top-0 left-0 h-screen w-full transform transition-transform duration-200 ease-out z-30 ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
         onClick={toggleSidebar}

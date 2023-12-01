@@ -2,17 +2,24 @@ import { User } from "../models/User";
 import { Request } from "./request";
 
 export class LoginService {
+  public static async me(): Promise<User> {
+    return await Request.get({ url: "artisan/me" });
+  }
+
   public static async login(email: string, password: string): Promise<User> {
-    const response = await Request.post("auth/login", {
-      email,
-      password,
+    const response = await Request.post({
+      url: "auth/login",
+      body: {
+        email,
+        password,
+      },
+      useToken: false,
     });
 
     const { token } = response;
+    localStorage.setItem("token", token);
 
-    const me = await Request.get("artisan/me", {
-      Authorization: `Bearer ${token}`,
-    });
+    const me = await this.me();
 
     const user: User = {
       id: me.id,
@@ -22,7 +29,6 @@ export class LoginService {
     };
 
     localStorage.setItem("user", JSON.stringify(user));
-
     return user;
   }
 
@@ -35,17 +41,19 @@ export class LoginService {
     email: string,
     password: string
   ): Promise<User> {
-    const response = await Request.post("auth/register", {
-      name,
-      email,
-      password,
+    const response = await Request.post({
+      url: "auth/register",
+      body: {
+        name,
+        email,
+        password,
+      },
+      useToken: false,
     });
 
     const { token } = response;
 
-    const me = await Request.get("artisan/me", {
-      Authorization: `Bearer ${token}`,
-    });
+    const me = await this.me();
 
     const user: User = {
       id: me.id,

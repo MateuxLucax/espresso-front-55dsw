@@ -1,19 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AutocompleteInput from "../../components/AutocompleteInput";
 import Header from "../../components/Header";
 import Input from "../../components/Input";
 import TextArea from "../../components/Textarea";
 import Button from "../../components/Button";
 import Checkbox from "../../components/Checkbox";
-import UserContext from "../../state/user/UserContext";
 import ErrorToast from "../../components/ErrorToast";
 import { RecipeService } from "../../services/recipeService";
 import { useNavigate } from "react-router-dom";
 import { MethodService } from "../../services/methodService";
+import Title from "../../components/Title";
 
 export default function CreateRecipePage() {
   const navigate = useNavigate();
-  const { user } = useContext(UserContext);
   const [title, setTitle] = useState("");
   const [method, setMethod] = useState("");
   const [cups, setCups] = useState(1);
@@ -28,7 +27,7 @@ export default function CreateRecipePage() {
   useEffect(() => {
     async function getMethods() {
       try {
-        const methods = await MethodService.all(user?.token || "");
+        const methods = await MethodService.all();
         if (methods) {
           setMethods(methods);
         }
@@ -38,7 +37,7 @@ export default function CreateRecipePage() {
       }
     }
     getMethods();
-  }, [user]);
+  }, []);
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,17 +48,14 @@ export default function CreateRecipePage() {
       setLoading(true);
       setError("");
 
-      const recipe = await RecipeService.createRecipe(
-        {
-          title,
-          method,
-          cups,
-          description,
-          steps,
-          public: pubic,
-        },
-        user?.token || ""
-      );
+      const recipe = await RecipeService.createRecipe({
+        title,
+        method,
+        cups,
+        description,
+        steps,
+        public: pubic,
+      });
 
       if (recipe) {
         setTitle("");
@@ -88,9 +84,7 @@ export default function CreateRecipePage() {
     <>
       <Header />
       <main className="w-full max-w-lg self-center flex flex-col mt-16">
-        <h1 className="text-primary font-display text-4xl font-bold my-12">
-          crie sua receita
-        </h1>
+        <Title>crie sua receita</Title>
         <form
           onSubmit={handleSubmit}
           className="flex flex-col gap-4 items-center"

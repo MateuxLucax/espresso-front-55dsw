@@ -2,13 +2,16 @@ import { Recipe } from "../models/Recipe";
 import { Request } from "./request";
 
 export class RecipeService {
-  static async createRecipe(
-    recipe: CreateRecipeDTO,
-    token: string
-  ): Promise<Recipe> {
-    return await Request.post("recipe", recipe, {
-      Authorization: `Bearer ${token}`,
-    });
+  static async createRecipe(recipe: CreateRecipeDTO): Promise<Recipe> {
+    return await Request.post({ url: "recipe", body: recipe });
+  }
+
+  static async getRecipe(id: string): Promise<Recipe> {
+    if (localStorage.getItem("token")) {
+      return await Request.get({ url: `recipe/${id}` });
+    }
+
+    return await Request.get({ url: `public/recipe/${id}`, useToken: false });
   }
 }
 

@@ -32,6 +32,7 @@ export default function SignInPage() {
         navigate("/me");
       }
     } catch (error: any) {
+      console.error(error);
       if (error.status === 404) {
         setEmailError("email não encontrado");
       } else if (error.status === 401) {

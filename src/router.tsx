@@ -4,7 +4,7 @@ import SignInPage from "./pages/signIn/SignInPage";
 import MePage from "./pages/me/MePage";
 import SignUpPage from "./pages/signUp/SignUpPage";
 import CreateRecipePage from "./pages/createRepice/CreateRepicePage";
-import RecipePage from "./pages/recipe/recipePage";
+import ViewRecipePage from "./pages/viewRecipe/ViewRecipePage";
 
 function AppRouter() {
   return (
@@ -13,7 +13,7 @@ function AppRouter() {
         <Route path="/entrar" element={<SignInPage />} />
         <Route path="/cadastrar" element={<SignUpPage />} />
         <Route path="/receitas/criar" element={<CreateRecipePage />} />
-        <Route path="/receitas/visualizar/:id" element={<RecipePage />} />
+        <Route path="/receitas/visualizar/:id" element={<ViewRecipePage />} />
         <Route path="/me" element={<MePage />} />
         <Route path="*" element={<LandingPage />} />
       </Routes>

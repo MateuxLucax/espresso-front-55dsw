@@ -1,15 +1,33 @@
 import { API_URL } from "./utils";
 
+export type GetProps = {
+  url: string;
+  useToken?: boolean;
+};
+
+export type PostProps = {
+  url: string;
+  body: any;
+  useToken?: boolean;
+};
+
 export class Request {
   static validStatusCodes = [200, 201, 204];
 
-  public static async get(url: string, headers?: HeadersInit): Promise<any> {
+  public static async get({ url, useToken = true }: GetProps): Promise<any> {
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+    if (useToken) {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token");
+
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API_URL}/${url}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
+      headers,
     });
 
     if (this.validStatusCodes.includes(response.status)) {
@@ -19,17 +37,24 @@ export class Request {
     }
   }
 
-  public static async post(
-    url: string,
-    body: any,
-    headers?: HeadersInit
-  ): Promise<any> {
+  public static async post({
+    url,
+    body,
+    useToken = true,
+  }: PostProps): Promise<any> {
+    const headers: HeadersInit = {
+      "Content-Type": "application/json",
+    };
+    if (useToken) {
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token");
+
+      headers.Authorization = `Bearer ${token}`;
+    }
+
     const response = await fetch(`${API_URL}/${url}`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        ...headers,
-      },
+      headers,
       body: JSON.stringify(body),
     });
 

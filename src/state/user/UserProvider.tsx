@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode } from "react";
 import UserContext from "./UserContext";
-import { Request } from "../../services/request";
 import { User } from "../../models/User";
+import { LoginService } from "../../services/loginService";
 
 interface UserProviderProps {
   children: ReactNode;
@@ -17,9 +17,7 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
       try {
         const parsedUser = JSON.parse(currentUser) as User;
-        const response = await Request.get("artisan/me", {
-          Authorization: `Bearer ${parsedUser.token}`,
-        });
+        const response = await LoginService.me();
         if (!response) return;
 
         setUser(parsedUser);
