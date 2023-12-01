@@ -22,7 +22,6 @@ const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
 
         setUser(parsedUser);
       } catch (error) {
-        console.warn(error);
         setUser(undefined);
         localStorage.removeItem("user");
       }

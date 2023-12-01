@@ -22,7 +22,6 @@ export default function ViewRecipePage() {
         setError("");
         setRecipe(await RecipeService.getRecipe(id));
       } catch (error) {
-        console.error(error);
         setError("erro ao carregar receita");
       }
     }
@@ -36,13 +35,20 @@ export default function ViewRecipePage() {
     };
   }, [id]);
 
-  console.log(recipe);
-
   return (
     <>
       <Header />
       <main className="w-full max-w-lg flex flex-col mt-16">
-        <Title>{recipe?.title}</Title>
+        <div className="flex justify-between items-center">
+          <Title>{recipe?.title}</Title>
+          <button
+            className="flex justify-center items-center w-12 h-12 hover:opacity-80 active:opacity-70"
+            title="favoritar"
+          >
+            {/* <span className="material-symbols-outlined text-yellow-600 text-3xl"> */}
+            <span className="material-symbols-outlined text-3xl">star</span>
+          </button>
+        </div>
         <section className="flex flex-col text-lg gap-4">
           <div className="flex gap-4 justify-between">
             <div className="flex flex-col gap-2">

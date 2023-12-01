@@ -13,6 +13,14 @@ export class RecipeService {
 
     return await Request.get({ url: `public/recipe/${id}`, useToken: false });
   }
+
+  static async getAll(): Promise<Recipe[]> {
+    if (localStorage.getItem("token")) {
+      return await Request.get({ url: "recipe/all" });
+    }
+
+    return await Request.get({ url: "public/recipe/all", useToken: false });
+  }
 }
 
 export type CreateRecipeDTO = {

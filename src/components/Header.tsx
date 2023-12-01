@@ -85,7 +85,7 @@ export default function Header() {
           }}
           className="bg-background w-full h-full md:w-96 md:border-solid md:border-primary md:border-r-2 flex flex-col p-4 gap-4"
         >
-          <div className="flex gap-2 items-center">
+          <div className="flex gap-2 items-center justify-between">
             <span className="hidden sm:flex material-symbols-outlined text-3xl">
               face
             </span>

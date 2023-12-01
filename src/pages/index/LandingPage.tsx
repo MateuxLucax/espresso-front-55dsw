@@ -4,7 +4,7 @@ export default function LandingPage() {
   return (
     <>
       <main className="my-0 mx-auto">
-        <section className="h-screen flex flex-col">
+        <section className="h-screen h-screen-dvh flex flex-col">
           <img
             className="mt-16 h-8 w-100 mx-auto"
             src={logo}

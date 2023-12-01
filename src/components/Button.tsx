@@ -1,7 +1,7 @@
 interface ButtonProps {
-  text: string;
+  text?: string;
   type?: "submit" | "reset" | "button" | undefined;
-  icon: string;
+  icon?: string;
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string;
   loading?: boolean;

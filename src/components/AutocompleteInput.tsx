@@ -29,7 +29,6 @@ export default function AutocompleteInput({
 
   const handleOptionClick = (option: string) => {
     onChange(option);
-    console.log(option);
     setShowOptions(false);
   };
 
@@ -52,7 +51,6 @@ export default function AutocompleteInput({
             if (!showOptions) setShowOptions(true);
           }}
           onBlur={() => {
-            console.log("blur");
             setTimeout(() => {
               setShowOptions(false);
             }, 100);

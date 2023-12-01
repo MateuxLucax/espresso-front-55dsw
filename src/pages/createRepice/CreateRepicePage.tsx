@@ -32,7 +32,6 @@ export default function CreateRecipePage() {
           setMethods(methods);
         }
       } catch (error: any) {
-        console.error(error);
         setError("não foi possível carregar os métodos");
       }
     }
