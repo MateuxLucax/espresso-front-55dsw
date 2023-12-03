@@ -17,12 +17,6 @@ const routes = [
     loggedIn: true,
   },
   {
-    name: "favoritos",
-    path: "/favoritos",
-    icon: "bookmarks",
-    loggedIn: true,
-  },
-  {
     name: "criar receita",
     path: "/receitas/criar",
     icon: "bookmark_manager",

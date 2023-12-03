@@ -3,7 +3,7 @@ import logo from "../../assets/svg/logo.svg";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { LoginService } from "../../services/loginService";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ErrorToast from "../../components/ErrorToast";
 import UserContext from "../../state/user/UserContext";
 
@@ -89,8 +89,15 @@ export default function SignUpPage() {
             placeholder={"digite sua senha"}
             error={passwordError}
           />
+          <p className="leading-none">
+            Já tem uma conta?{" "}
+            <Link to={"/entrar"}>
+              <span className="text-primary font-bold transition-all hover:opacity-80 active:opacity-70">
+                Entre aqui
+              </span>
+            </Link>
+          </p>
           <Button
-            className="mt-4"
             text={"cadastrar"}
             type={"submit"}
             icon={"login"}
