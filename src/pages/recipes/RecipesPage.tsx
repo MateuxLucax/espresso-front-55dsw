@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import ErrorToast from "../../components/ErrorToast";
 import Header from "../../components/Header";
 import Title from "../../components/Title";
 import { Recipe } from "../../models/Recipe";
 import { RecipeService } from "../../services/recipeService";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import UserContext from "../../state/user/UserContext";
 
 export function RecipesPage() {
   const [recipes, setRecipes] = useState<Recipe[]>();
   const [error, setError] = useState<string>("");
+  const { user } = useContext(UserContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getRecipe() {
@@ -22,6 +25,28 @@ export function RecipesPage() {
 
     getRecipe();
   }, []);
+
+  async function toggleRecipeFavorite(recipe: Recipe) {
+    if (!user) {
+      navigate("/entrar");
+      return;
+    }
+
+    const updatedRecipe = { ...recipe, favorite: !recipe.favorite };
+    setRecipes(recipes?.map((r) => (r.id === recipe.id ? updatedRecipe : r)));
+
+    try {
+      if (recipe?.favorite) {
+        await RecipeService.unsetRecipeAsFavorite(recipe.id);
+      } else {
+        await RecipeService.setRecipeAsFavorite(recipe.id);
+      }
+    } catch (error) {
+      const updatedRecipe = { ...recipe, favorite: !recipe.favorite };
+      setRecipes(recipes?.map((r) => (r.id === recipe.id ? updatedRecipe : r)));
+      setError("erro ao favoritar receita");
+    }
+  }
 
   return (
     <>
@@ -47,9 +72,18 @@ export function RecipesPage() {
                 <button
                   className="flex justify-center items-center w-12 h-12 hover:opacity-80 active:opacity-70"
                   title="favoritar"
+                  onClick={(event) => {
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    toggleRecipeFavorite(recipe);
+                  }}
                 >
-                  {/* <span className="material-symbols-outlined text-yellow-600 text-3xl"> */}
-                  <span className="material-symbols-outlined text-2xl">
+                  <span
+                    className={`material-symbols-outlined text-3xl transition-all ${
+                      recipe?.favorite ? "text-yellow-600" : "text-gray-400"
+                    }`}
+                  >
                     star
                   </span>
                 </button>

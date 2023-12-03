@@ -8,4 +8,5 @@ export type Recipe = {
   cups: number;
   steps: RecipeStep[];
   public: boolean;
+  favorite?: boolean;
 };

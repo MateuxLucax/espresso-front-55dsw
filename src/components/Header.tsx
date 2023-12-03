@@ -5,29 +5,28 @@ import { NavLink, useNavigate } from "react-router-dom";
 
 const routes = [
   {
-    name: "me",
-    path: "/me",
-    icon: "face",
-  },
-  {
     name: "receitas",
     path: "/receitas",
     icon: "menu_book",
+    loggedIn: false,
   },
   {
     name: "minhas receitas",
     path: "/receitas/minhas",
     icon: "local_library",
+    loggedIn: true,
   },
   {
     name: "favoritos",
     path: "/favoritos",
     icon: "bookmarks",
+    loggedIn: true,
   },
   {
     name: "criar receita",
     path: "/receitas/criar",
     icon: "bookmark_manager",
+    loggedIn: true,
   },
 ];
 
@@ -79,13 +78,25 @@ export default function Header() {
           src={logo}
           alt="logo do espresso (uma xícara de café ao lado do texto 'espresso')"
         />
-        <button
-          onClick={logout}
-          title="sair"
-          className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
-        >
-          <i className="material-symbols-outlined">logout</i>
-        </button>
+        {user ? (
+          <button
+            onClick={logout}
+            title="sair"
+            className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+          >
+            <i className="material-symbols-outlined">logout</i>
+          </button>
+        ) : (
+          <button
+            onClick={() => {
+              navigate("/entrar");
+            }}
+            title="entrar"
+            className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+          >
+            <i className="material-symbols-outlined">login</i>
+          </button>
+        )}
       </header>
       <aside
         className={`fixed flex flex-col top-0 left-0 h-screen w-full transform transition-transform duration-200 ease-out z-30 ${
@@ -99,27 +110,34 @@ export default function Header() {
           }}
           className="bg-background w-full h-full md:w-96 md:border-solid md:border-primary md:border-r-2 flex flex-col p-4 gap-4"
         >
-          <div className="flex gap-2 items-center justify-between">
-            <span className="md:hidden material-symbols-outlined text-3xl">
-              face
-            </span>
-            <h3 className="font-display font-bold text-2xl line-clamp-1">
-              {user?.name}
-            </h3>
-            <button
-              onClick={toggleSidebar}
-              title="fechar menu"
-              className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
-            >
-              <i className="material-symbols-outlined">close</i>
-            </button>
-          </div>
-          <div className="w-full h-0.5 bg-primary"></div>
+          {user && (
+            <>
+              <div className="flex gap-2 items-center justify-between">
+                <span className="md:hidden material-symbols-outlined text-3xl">
+                  face
+                </span>
+                <h3 className="font-display font-bold text-2xl line-clamp-1">
+                  {user?.name}
+                </h3>
+                <button
+                  onClick={toggleSidebar}
+                  title="fechar menu"
+                  className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+                >
+                  <i className="material-symbols-outlined">close</i>
+                </button>
+              </div>
+              <div className="w-full h-0.5 bg-primary"></div>
+            </>
+          )}
           <ul className="flex flex-col gap-2">
-            {routes.map((route) => (
-              <li key={route.path} className="flex gap-4 items-center">
-                <NavLink
-                  className={({ isActive }) => `
+            {routes.map((route) => {
+              if (route.loggedIn && !user) return null;
+
+              return (
+                <li key={route.path} className="flex gap-4 items-center">
+                  <NavLink
+                    className={({ isActive }) => `
                 ${
                   isActive
                     ? "font-bold border-b-primary border-b-2"
@@ -127,16 +145,17 @@ export default function Header() {
                 }
                 border-b-2 border-transparent flex font-display font-bold text-xl line-clamp-1 h-12 items-center justify-start w-full gap-2 transition-all
               `}
-                  to={route.path}
-                  end
-                >
-                  <span className="material-symbols-outlined text-2xl">
-                    {route.icon}
-                  </span>
-                  <span className="leading-none">{route.name}</span>
-                </NavLink>
-              </li>
-            ))}
+                    to={route.path}
+                    end
+                  >
+                    <span className="material-symbols-outlined text-2xl">
+                      {route.icon}
+                    </span>
+                    <span className="leading-none">{route.name}</span>
+                  </NavLink>
+                </li>
+              );
+            })}
           </ul>
         </section>
       </aside>

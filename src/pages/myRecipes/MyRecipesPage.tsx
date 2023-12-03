@@ -34,7 +34,7 @@ export function MyRecipesPage() {
           {recipes?.map((recipe) => (
             <Link
               key={recipe.id}
-              to={`visualizar/${recipe.id}`}
+              to={`/receitas/visualizar/${recipe.id}`}
               className="flex flex-col border-4 border-primary text-primary hover:text-background hover:bg-primary cursor-pointer active:opacity-80  p-4 gap-4 transition-all"
             >
               <div className="flex justify-between items-center">

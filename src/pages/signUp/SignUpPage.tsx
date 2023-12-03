@@ -17,21 +17,6 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
   const { setUser } = useContext(UserContext);
-
-  function checkPassword(password: string) {
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-
-    if (regex.test(password)) {
-      return true;
-    }
-
-    setPasswordError(
-      "a senha deve conter no mínimo 8 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial"
-    );
-    return false;
-  }
-
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (loading) return;
     event.preventDefault();
@@ -41,10 +26,6 @@ export default function SignUpPage() {
       setEmailError("");
       setPasswordError("");
       setGeneralError("");
-
-      if (!checkPassword(password)) {
-        return;
-      }
 
       const user = await LoginService.signup(name, email, password);
       if (user) {
