@@ -17,6 +17,7 @@ export default function SignUpPage() {
   const [loading, setLoading] = useState(false);
   const [generalError, setGeneralError] = useState("");
   const { setUser } = useContext(UserContext);
+
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (loading) return;
     event.preventDefault();
@@ -28,9 +29,10 @@ export default function SignUpPage() {
       setGeneralError("");
 
       const user = await LoginService.signup(name, email, password);
+      debugger;
       if (user) {
         setUser(user);
-        navigate("/me");
+        navigate("/receitas");
       }
     } catch (error: any) {
       if (error.status === 409) {

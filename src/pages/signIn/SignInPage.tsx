@@ -29,7 +29,7 @@ export default function SignInPage() {
       const user = await LoginService.login(email, password);
       if (user) {
         setUser(user);
-        navigate("/me");
+        navigate("/receitas");
       }
     } catch (error: any) {
       if (error.status === 404) {

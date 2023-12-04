@@ -52,6 +52,7 @@ export class LoginService {
     });
 
     const { token } = response;
+    localStorage.setItem("token", token);
 
     const me = await this.me();
 

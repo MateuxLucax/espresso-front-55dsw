@@ -14,7 +14,7 @@ export default function LandingPage() {
             src={logo}
             alt="logo do espresso (uma xícara de café ao lado do texto 'espresso')"
           />
-          <div className="flex flex-col gap-8 mx-0 my-auto">
+          <div className="flex flex-col gap-8 my-8 mx-0 my-auto">
             <h1 className="font-display text-7xl text-primary">
               descubra o mundo do <span className="font-bold">café</span>
             </h1>
