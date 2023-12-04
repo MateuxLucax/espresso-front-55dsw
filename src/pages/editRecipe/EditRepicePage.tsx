@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import ErrorToast from "../../components/ErrorToast";
 import { RecipeService } from "../../services/recipeService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { MethodService } from "../../services/methodService";
 import Title from "../../components/Title";
 import EditRecipe from "../../components/EditRecipe";
 
-export default function CreateRecipePage() {
+export default function EditRecipePage() {
+  const { id } = useParams();
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [method, setMethod] = useState("");
@@ -19,6 +20,39 @@ export default function CreateRecipePage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [methods, setMethods] = useState<string[]>([]);
+
+  useEffect(() => {
+    async function getRecipe() {
+      if (!id) {
+        setError("id da receita não informado");
+        return;
+      }
+
+      try {
+        setError("");
+        const recipe = await RecipeService.getRecipe(id);
+        if (recipe) {
+          setTitle(recipe.title);
+          setMethod(recipe.method);
+          setCups(recipe.cups);
+          setDescription(recipe.description);
+          setSteps(recipe.steps.map((step) => step.description));
+          setPublic(recipe.public);
+        } else {
+          throw new Error();
+        }
+      } catch (error) {
+        setError("erro ao carregar receita");
+      }
+    }
+    if (id) {
+      getRecipe();
+    }
+
+    return () => {
+      setError("");
+    };
+  }, [id]);
 
   useEffect(() => {
     async function getMethods() {
@@ -37,13 +71,14 @@ export default function CreateRecipePage() {
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     if (loading) return;
+    if (!id) return;
     if (steps.length === 0) return setError("adicione pelo menos uma etapa");
 
     try {
       setLoading(true);
       setError("");
 
-      const recipe = await RecipeService.createRecipe({
+      const recipe = await RecipeService.updateRecipe(id, {
         title,
         method,
         cups,
@@ -79,7 +114,7 @@ export default function CreateRecipePage() {
     <>
       <Header />
       <main className="w-full max-w-lg self-center flex flex-col mt-16">
-        <Title>crie sua receita</Title>
+        <Title>alterar receita</Title>
         <EditRecipe
           title={title}
           method={method}
@@ -90,7 +125,7 @@ export default function CreateRecipePage() {
           loading={loading}
           methods={methods}
           newStep={newStep}
-          action="criar"
+          action="alterar"
           setTitle={setTitle}
           setMethod={setMethod}
           setCups={setCups}

@@ -68,8 +68,11 @@ export default function Header() {
           <i className="material-symbols-outlined">menu</i>
         </button>
         <img
-          className="h-8 w-100 mx-auto"
+          className="h-8 w-100 mx-auto cursor-pointer"
           src={logo}
+          onClick={() => {
+            navigate("/receitas");
+          }}
           alt="logo do espresso (uma xícara de café ao lado do texto 'espresso')"
         />
         {user ? (

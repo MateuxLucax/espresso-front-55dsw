@@ -3,6 +3,7 @@ import Title from "./Title";
 import { Recipe } from "../models/Recipe";
 import { User } from "../models/User";
 import { useState } from "react";
+import Input from "./Input";
 
 export interface RecipeListProps {
   title: string;
@@ -18,10 +19,27 @@ export default function RecipeList({
   user,
 }: RecipeListProps) {
   const [favoriteOnly, setFavoriteOnly] = useState<boolean>(false);
+  const [filter, setFilter] = useState<string>("");
 
   function toggleFavoriteOnly() {
     setFavoriteOnly(!favoriteOnly);
   }
+
+  const filteredRecipes = recipes?.filter((recipe) => {
+    if (!filter) return true;
+
+    const titleMatch = recipe.title
+      .toLowerCase()
+      .includes(filter.toLowerCase());
+    const descriptionMatch = recipe.description
+      .toLowerCase()
+      .includes(filter.toLowerCase());
+    const methodMatch = recipe.method
+      .toLowerCase()
+      .includes(filter.toLowerCase());
+
+    return titleMatch || descriptionMatch || methodMatch;
+  });
 
   return (
     <>
@@ -41,8 +59,17 @@ export default function RecipeList({
           </button>
         )}
       </div>
+      <Input
+        className="w-full  mb-12"
+        id="filter"
+        type="text"
+        label="filtrar"
+        placeholder="filtrar receitas..."
+        value={filter}
+        onChange={setFilter}
+      />
       <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8 pb-8 ">
-        {recipes?.map((recipe) => {
+        {filteredRecipes?.map((recipe) => {
           if (favoriteOnly && !recipe.favorite) return null;
 
           return (

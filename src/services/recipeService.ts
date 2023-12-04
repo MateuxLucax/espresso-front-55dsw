@@ -47,6 +47,14 @@ export class RecipeService {
   static deleteNote(recipeId: string, noteId: string): Promise<Success> {
     return Request.delete({ url: `recipe/${recipeId}/note/${noteId}` });
   }
+
+  static deleteRecipe(id: string): Promise<Success> {
+    return Request.delete({ url: `recipe/${id}` });
+  }
+
+  static updateRecipe(id: string, recipe: CreateRecipeDTO): Promise<Recipe> {
+    return Request.put({ url: `recipe/${id}`, body: recipe });
+  }
 }
 
 export type CreateRecipeDTO = {

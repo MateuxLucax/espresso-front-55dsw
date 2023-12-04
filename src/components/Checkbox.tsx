@@ -3,6 +3,7 @@ interface CheckboxProps {
   text: string;
   onClick?: (value: boolean) => void;
   className?: string;
+  checked?: boolean;
 }
 
 export default function Checkbox({
@@ -10,14 +11,20 @@ export default function Checkbox({
   text,
   onClick,
   className,
+  checked,
 }: CheckboxProps) {
   return (
-    <div className={`w-full flex items-center gap-2 ${className}`}>
+    <div
+      className={`w-full flex items-center cursor-pointer gap-2 ${className}`}
+    >
       <input
+        defaultChecked={checked}
+        checked={checked}
+        value={checked ? "on" : "off"}
         className="
           peer p-2 relative appearance-none shrink-0 w-6 h-6 border-2 border-primary rounded-sm bg-background
           focus:outline-none focus:ring-offset-0 focus:ring-1 focus:ring-primary-100
-          checked:bg-primary checked:border-0
+          checked:bg-primary checked:border-0 cursor-pointer
           disabled:border-steel-400 disabled:bg-steel-400
         "
         type="checkbox"
@@ -40,7 +47,10 @@ export default function Checkbox({
       >
         <polyline points="20 6 9 17 4 12"></polyline>
       </svg>
-      <label className="font-bold text-primary select-none" htmlFor={id}>
+      <label
+        className="font-bold text-primary select-none cursor-pointer"
+        htmlFor={id}
+      >
         {text}
       </label>
     </div>

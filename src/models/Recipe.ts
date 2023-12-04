@@ -9,4 +9,5 @@ export type Recipe = {
   steps: RecipeStep[];
   public: boolean;
   favorite?: boolean;
+  owner?: string;
 };

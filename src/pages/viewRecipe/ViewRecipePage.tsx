@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../../components/Header";
 import Title from "../../components/Title";
 import { useContext, useEffect, useState } from "react";
@@ -20,6 +20,7 @@ export default function ViewRecipePage() {
   const [notes, setNotes] = useState<RecipeNote[]>([]);
   const [newNote, setNewNote] = useState<string>("");
   const [loadingNotes, setLoadingNotes] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function getRecipe() {
@@ -31,7 +32,10 @@ export default function ViewRecipePage() {
       try {
         setError("");
         setRecipe(await RecipeService.getRecipe(id));
-      } catch (error) {
+      } catch (error: any) {
+        if (error.status === 404) {
+          navigate("/receitas");
+        }
         setError("erro ao carregar receita");
       }
     }
@@ -43,7 +47,7 @@ export default function ViewRecipePage() {
       setRecipe(undefined);
       setError("");
     };
-  }, [id]);
+  }, [id, navigate]);
 
   async function toggleRecipeFavorite() {
     if (!recipe) return;
@@ -93,6 +97,18 @@ export default function ViewRecipePage() {
     }
   }
 
+  async function deleteRecipeHandler() {
+    if (!recipe?.id) return;
+    if (!window.confirm("deseja realmente excluir esta receita?")) return;
+
+    try {
+      await RecipeService.deleteRecipe(recipe.id);
+      navigate("/receitas");
+    } catch (error) {
+      setError("erro ao excluir receita");
+    }
+  }
+
   return (
     <>
       <Header />
@@ -100,15 +116,46 @@ export default function ViewRecipePage() {
         <div className="flex justify-between items-center">
           <Title>{recipe?.title}</Title>
           {user && (
-            <button title="favoritar" onClick={toggleRecipeFavorite}>
-              <span
-                className={`material-symbols-outlined text-3xl transition-all ${
-                  recipe?.favorite ? "text-yellow-600" : "text-gray-400"
-                }`}
+            <div className="flex gap-4">
+              {recipe?.owner === user?.id && (
+                <>
+                  <button
+                    className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+                    title="alterar receita"
+                    onClick={() => {
+                      if (!recipe?.id) return;
+                      navigate(`/receitas/alterar/${recipe.id}`);
+                    }}
+                  >
+                    <span className="text-3xl text-primary material-symbols-outlined">
+                      edit
+                    </span>
+                  </button>
+                  <button
+                    className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+                    title="excluir receita"
+                    onClick={deleteRecipeHandler}
+                  >
+                    <span className="text-3xl text-red-600 material-symbols-outlined">
+                      delete
+                    </span>
+                  </button>
+                </>
+              )}
+              <button
+                className="h-12 w-12 hover:opacity-80 active:opacity-70 flex justify-center items-center transition-all"
+                title="favoritar"
+                onClick={toggleRecipeFavorite}
               >
-                star
-              </span>
-            </button>
+                <span
+                  className={`material-symbols-outlined text-3xl transition-all ${
+                    recipe?.favorite ? "text-yellow-600" : "text-gray-400"
+                  }`}
+                >
+                  star
+                </span>
+              </button>
+            </div>
           )}
         </div>
         <section className="flex flex-col text-lg gap-4">
@@ -140,6 +187,7 @@ export default function ViewRecipePage() {
           </ol>
           {user && (
             <>
+              <div className="w-full h-1 bg-primary"></div>
               <section className="flex flex-col">
                 <button
                   className="flex justify-between font-bold items-center text-lg w-full h-12 hover:opacity-80 active:opacity-70"
@@ -166,7 +214,7 @@ export default function ViewRecipePage() {
                     {notes.map((note) => (
                       <li key={note.id} className="flex flex-col gap-2">
                         <div className="flex justify-between items-center">
-                          <span className="text-md font-bold text-primary">
+                          <span className="text-sm font-bold text-primary">
                             {formatDate(parseTimestamp(note.createdAt))}
                           </span>
                           <button

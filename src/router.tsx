@@ -6,6 +6,7 @@ import CreateRecipePage from "./pages/createRepice/CreateRepicePage";
 import ViewRecipePage from "./pages/viewRecipe/ViewRecipePage";
 import { RecipesPage } from "./pages/recipes/RecipesPage";
 import { MyRecipesPage } from "./pages/myRecipes/MyRecipesPage";
+import EditRecipePage from "./pages/editRecipe/EditRepicePage";
 
 export default function AppRouter() {
   return (
@@ -19,6 +20,14 @@ export default function AppRouter() {
           element={
             <Protected>
               <CreateRecipePage />
+            </Protected>
+          }
+        />
+        <Route
+          path="/receitas/alterar/:id"
+          element={
+            <Protected>
+              <EditRecipePage />
             </Protected>
           }
         />
